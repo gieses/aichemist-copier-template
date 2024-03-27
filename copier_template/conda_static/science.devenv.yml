@@ -1,0 +1,14 @@
+name: science
+
+channels:
+  - bioconda
+  - conda-forge
+
+dependencies:
+  - numpy
+  - scipy
+  - pandas
+  - tqdm
+  - ipython
+  - matplotlib
+  - seaborn

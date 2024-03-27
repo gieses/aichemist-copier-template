@@ -1,0 +1,15 @@
+name: testing
+
+channels:
+  - conda-forge
+
+dependencies:
+  - pytest
+  - pip
+  - ruff
+  - pytest-cov
+  - pytest-sugar
+  - pre-commit
+  - pytest-mock
+  - pip:
+      - pytest-ruff

@@ -1,0 +1,19 @@
+{% set pytorch_version = os.environ.get('PYTORCH_VERSION', '>=1.11') %}
+{% set with_torchvision = os.environ.get('WITH_TORCHVISION', True) %}
+{% set with_macos_rosetta = os.environ.get('WITH_MACOS_ROSETTA', False) %}
+{% set pytorch_cf_works = os.environ.get('PYTORCH_CF_WORKS', True) %}
+name: pytorch
+
+channels:
+  - conda-forge  # [pytorch_cf_works and not with_macos_rosetta]
+  - pytorch      # [not pytorch_cf_works or with_macos_rosetta]
+
+includes:
+  - {{ root }}/cuda.devenv.yml
+
+dependencies:
+  # Installing from the conda-forge channel
+  - conda-forge::pytorch {{ pytorch_version }}      # [pytorch_cf_works and not with_macos_rosetta]
+  - conda-forge::pytorch-gpu {{ pytorch_version }}  # [pytorch_cf_works and not with_macos_rosetta and linux]
+  - pytorch::pytorch {{ pytorch_version }}          # [not pytorch_cf_works or with_macos_rosetta]
+  - torchvision  # [with_torchvision]

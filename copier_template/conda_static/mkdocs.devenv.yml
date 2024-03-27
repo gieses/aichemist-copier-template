@@ -1,0 +1,18 @@
+name: mkdocs
+
+channels:
+  - conda-forge
+
+dependencies:
+  - mkdocs
+  - mkdocs-material
+  - mkdocs-material-extensions
+  - mkdocs-awesome-pages-plugin
+  - mkdocstrings-python
+  - mkdocs-macros-plugin
+  - mkdocs-redirects
+  - mkdocs-git-revision-date-localized-plugin
+  - mkdocs-print-site-plugin
+  - mkdocs-section-index
+  - mkdocs-exclude
+  - mkdocs-plantuml

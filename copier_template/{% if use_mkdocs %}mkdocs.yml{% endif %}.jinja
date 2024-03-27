@@ -1,0 +1,92 @@
+# nice tutorial: https://realpython.com/python-project-documentation-with-mkdocs/
+site_name: "Advanced machine learning for Innovative Drug Discovery"
+# repo_name: organisation/repo_name/
+# repo_url: full_repo_url
+repo_name: my_super_repository
+repo_url: https://github.com/my_super_repository
+copyright: Copyright &copy; 2016 - 2024 Bayer - Machine Learning Research
+theme:
+  name: "material"
+  logo: static/logo.png
+  icon:
+    repo: fontawesome/brands/git-alt
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+    - python
+  features:
+    - tabs
+    - content.code.select
+    - content.code.copy
+    - navigation.footer
+    #- navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - search.suggest
+  font:
+    text: Ubuntu
+    code: Ubuntu Mono
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+markdown_extensions:
+  - abbr
+  - smarty
+  - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+- search
+- numkdoc
+- autorefs
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_docstring_modules: true
+          show_docstring_description: true
+          docstring_style: numpy
+          show_docstring_parameters: true
+          docstring_section_style: table
+          show_docstring_returns: true
+          docstring_options:
+            ignore_init_summary: false
+            trim_doctest_flags: true
+            docstring_section_style: table
+
+
+nav:
+  - Home: index.md
+  - Installation: install.md
+  - API documentation: {{project_name}}.md

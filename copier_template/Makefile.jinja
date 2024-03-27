@@ -1,0 +1,123 @@
+.ONESHELL:
+CONDA_ACTIVATE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate ; conda activate
+.DEFAULT_GOAL := help
+.PHONY: help conda_update conda_prepare_base yml env rm_env rm_yml update_submodules clean docs serve deploy_docs
+
+#################################################################################
+# GLOBALS                                                                       #
+#################################################################################
+ENV_NAME = {{ environment_name }}
+
+# conda devenvs
+SCIENCE = {% if with_science == True %}True{% else %}''{% endif %}
+TORCH = {% if with_torch == True %}True{% else %}''{% endif %}
+TESTING = {% if with_testing == True %}True{% else %}''{% endif %}
+MKDOCS = {% if use_mkdocs == True %}True{% else %}''{% endif %}
+
+## install pre-commit
+pre_commit_install:
+	pre-commit install
+
+## run pre-commit checks
+pre_commit_run:
+	pre-commit run
+
+## update conda base env
+conda_update:
+	conda update -c conda-forge mamba conda conda-devenv -n base
+
+## update conda base env
+conda_prepare_base:
+	conda install -c conda-forge mamba conda conda-devenv copier -n base
+
+## print the env name that is defined
+env_show:
+	echo $(ENV_NAME)
+
+## create environment.yml using conda devenv
+yml:
+	 WITH_MKDOCS=$(MKDOCS) WITH_TESTING=$(TESTING) WITH_TORCH=$(TORCH) WITH_SCIENCE=$(SCIENCE) conda devenv -e mamba --file environment.devenv.yml --print >environment.yml
+
+## update the environment.yml and create/update the environment
+env: rm_yml yml
+	 mamba env update -f environment.yml -n $(ENV_NAME)
+
+## remove the conda env
+env_rm:						## remove conda env
+	conda env remove -n $(ENV_NAME)
+
+## lock / export the current environment to a yaml file
+env_lock:
+	conda env export -n $(ENV_NAME) -f environment.lock.yaml
+
+## remove the yaml environment file
+rm_yml:
+	rm -f environment.yml
+
+## clean the project dir from cached python files
+clean:
+	find . -type f -name "*.py[co]" -delete
+	find . -type d -name "__pycache__" -delete
+
+## run tests
+test:
+	pytest {{ project_name }}
+
+## run ruff on the project to fix linting issues
+ruff_fix:
+	ruff check --fix {{ project_name }}
+
+## run ruff-format on the project
+ruff_format:
+	ruff format {{ project_name }}
+
+## build the docs using mkdocs
+docs:
+	mkdocs build
+
+## serve docs locally
+docs_serve:	docs		## make & serve the docs locally
+	mkdocs serve
+
+## deploy docs to github-pages
+docs_deploy:		## deploy the docs to github-pages
+	mkdocs gh-deploy
+
+help:
+	@echo "$$(tput bold)Available rules:$$(tput sgr0)"
+	@echo
+	@sed -n -e "/^## / { \
+		h; \
+		s/.*//; \
+		:doc" \
+		-e "H; \
+		n; \
+		s/^## //; \
+		t doc" \
+		-e "s/:.*//; \
+		G; \
+		s/\\n## /---/; \
+		s/\\n/ /g; \
+		p; \
+	}" ${MAKEFILE_LIST} \
+	| LC_ALL='C' sort --ignore-case \
+	| awk -F '---' \
+		-v ncol=$$(tput cols) \
+		-v indent=19 \
+		-v col_on="$$(tput setaf 6)" \
+		-v col_off="$$(tput sgr0)" \
+	'{ \
+		printf "%s%*s%s ", col_on, -indent, $$1, col_off; \
+		n = split($$2, words, " "); \
+		line_length = ncol - indent; \
+		for (i = 1; i <= n; i++) { \
+			line_length -= length(words[i]) + 1; \
+			if (line_length <= 0) { \
+				line_length = ncol - indent - length(words[i]) - 1; \
+				printf "\n%*s ", -indent, " "; \
+			} \
+			printf "%s ", words[i]; \
+		} \
+		printf "\n"; \
+	}' \
+	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')

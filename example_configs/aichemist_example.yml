@@ -1,0 +1,15 @@
+project_name: aichemist
+module_name: example_module
+author: Max Mustermann
+email: max.mustermann@bayer.com
+description: A good practice template based on copier for aichemist.
+environment_name: aichemist_env
+with_torch: False
+with_testing: True
+with_science: True
+notebooks: True
+workflows: True
+results: True
+setup_github: True
+use_mkdocs: True
+use_precommit: True

@@ -1,0 +1,74 @@
+# questions
+project_name:
+    type: str
+    help: What is your project name?
+
+environment_name:
+    type: str
+    help: What is your preferred conda environment name?
+
+author:
+    type: str
+    help: What is your name?
+
+email:
+    type: str
+    help: What is your email?
+
+description:
+    type: str
+    help: What is your project description?
+
+with_science:
+    type: bool
+    help: Include science dependencies?
+    default: True
+
+with_torch:
+    type: bool
+    help: Include pytorch dependencies?
+    default: True
+
+with_testing:
+    type: bool
+    help: Include testing dependencies?
+    default: True
+
+workflows:
+    type: bool
+    help: Include workflows directory?
+    default: True
+
+notebooks:
+    type: bool
+    help: Include notebooks directory?
+    default: True
+
+results:
+    type: bool
+    help: Include results directory?
+    default: True
+
+setup_github:
+  type: bool
+  help: "Setup GitHub repository (requires gh CLI)?"
+  default: no
+
+use_precommit:
+  type: bool
+  help: Enable ruff format and ruff check pre-commit hooks?
+  default: False
+
+use_mkdocs:
+  type: bool
+  help: Add mkdocs utils to the scaffold.
+  default: True
+
+# good template with some examples: https://github.com/browniebroke/pypackage-template/blob/main/copier.yml
+_tasks:
+    - "echo 'Hello, World!'"
+    - "pwd"
+    # Initial commit
+    - "{% if setup_github %}git init{% endif %}"
+    # Setup pre-commit
+    - "{% if use_precommit and setup_github %}pre-commit install{% endif %}"

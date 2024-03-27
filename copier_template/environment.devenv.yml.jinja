@@ -1,0 +1,33 @@
+name: {{environment_name}}
+
+channels:
+  - conda-forge
+
+includes:
+{% raw %}
+{% set with_science = os.environ.get('WITH_SCIENCE', True) %}
+  - {{root}}/conda_static/science.devenv.yml             # [with_science]
+{% endraw %}
+
+{% raw %}
+{% set with_tests = os.environ.get('WITH_TESTS', True) %}
+  - {{root}}/conda_static/tests.devenv.yml             # [with_tests]
+{% endraw %}
+
+{% raw %}
+{% set with_torch = os.environ.get('WITH_TORCH', True) %}
+  - {{root}}/conda_static/pytorch.devenv.yml             # [with_torch]
+{% endraw %}
+
+{% raw %}
+{% set with_torch = os.environ.get('WITH_MKDOCS', True) %}
+  - {{root}}/conda_static/mkdocs.devenv.yml             # [with_mkdocs]
+{% endraw %}
+
+dependencies:
+  - python
+  - ipython
+  - pip
+  - pip:
+    - setuptools
+    - setuptools_scm

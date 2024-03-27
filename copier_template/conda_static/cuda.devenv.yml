@@ -1,0 +1,8 @@
+name: cuda
+
+channels:
+  - conda-forge
+
+dependencies:
+  - cudatoolkit  # [linux]
+  - cudatoolkit-dev    # [linux]

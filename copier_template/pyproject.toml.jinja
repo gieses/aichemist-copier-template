@@ -1,0 +1,153 @@
+# ---- pytests
+[tool.pytest.ini_options]
+addopts = "--ruff --doctest-modules"
+testpaths = ["{{ project_name }}"]
+
+# ---- build
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+# ---- project
+[project]
+name = "{{project_name}}"
+authors = [
+    { name = "{{author}}", email = "{{email}}" },
+]
+description = "{{description}}"
+readme = "readme.md"
+requires-python = ">=3.8"
+keywords = ["one", "two"]
+license = { text = "BSD-3-Clause" }
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.optional-dependencies]
+#pdf = ["ReportLab>=1.2", "RXP"]
+#rest = ["docutils>=0.3", "pack ==1.1, ==1.3"]
+
+[project.scripts]
+#my-script = "my_package.module:function"
+
+
+# ---- setuptools
+[tool.setuptools]
+py-modules = ["{{project_name}}"]
+
+
+# ---- setuptools
+[tool.setuptools.dynamic]
+version = { attr = "{{project_name}}.__version__" }
+
+# ---- ruff
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "tests",
+    "test_*",
+    "__init__.py",
+]
+
+# Same as Black.
+line-length = 120
+indent-width = 4
+
+# ---- ruff lint
+# NOTE:
+# This probably needs to be defined in more detail, we can either pick the ones we want to include or go exhaustive
+# and exclude the annoying ones. E.g. we do not enforce typing (https://docs.astral.sh/ruff/rules/#flake8-annotations-ann)
+[tool.ruff.lint]
+# check rule definitions here: https://docs.astral.sh/ruff/rules/
+select = [
+    # pydocstyle (https://docs.astral.sh/ruff/rules/#pycodestyle-e-w)
+    "E",
+    "W",
+    # pyflakes (https://docs.astral.sh/ruff/rules/#pyflakes-f)
+    "F",
+    # pycodestyle (https://docs.astral.sh/ruff/rules/#pydocstyle-d)
+    "D",
+    # isort (https://docs.astral.sh/ruff/rules/#isort-i)
+    "I",
+    # pathlib (https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth)
+    "PTH",
+    # pandas (https://docs.astral.sh/ruff/rules/#pandas-vet-pd)
+    "PD",
+    # pep8 naming conventions https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "N",
+    # tidy imports (https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid)
+    "TID",
+    # numpy (https://docs.astral.sh/ruff/rules/#numpy-specific-rules-npy)
+    "NPY",
+]
+
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# ---- ruff format
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "single"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
+
+# ---- ruff lint.pycodestyle
+[tool.ruff.lint.pydocstyle]
+convention = "google"
